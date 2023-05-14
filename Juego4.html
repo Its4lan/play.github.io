@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <title>Juego de palabras mal escritas</title>
+	<link rel="stylesheet" href="style.css">
+	
+  </head>
+  <body>
+	
+	
+<h1>Juego de palabras mal escritas</h1>
+    <p>Encuentra todas las palabras mal escritas antes de que se agote el tiempo.</p><br>
+    <p class="texto1">“Sube la línea de mi vida con traazo igual a tus volcanez y luego vaja como línea de <br>
+        coorazon asta mis dedos.”
+
+        </p><br>
+    <p>Tiempo restante: <span id="contador">18</span> segundos</p>
+    <label for="inputPalabras">Ingresa las palabras mal escritas:</label>
+    <input type="text" id="inputPalabras">
+
+    <div id="mensaje"></div>
+	<br>
+    <button id="reintentar" style="display:none" onclick="location.reload()">Reintentar</button>
+
+    <br>
+
+    <a href="Index.html" class="nivel"><button class="volver">Volver</button></a> 
+    <script>
+      let tiempoRestante = 18;
+      let palabrasEncontradas = [];
+      const contadorElemento = document.getElementById("contador");
+      const palabrasMalEscritas = ["volcanez", "vaja" , "asta", "traazo", "coorazon"];
+
+      function comprobarPalabras() {
+        const palabrasIngresadas = document.getElementById("inputPalabras").value.toLowerCase().split(" ");
+        palabrasEncontradas = palabrasMalEscritas.filter((palabra) => palabrasIngresadas.includes(palabra));
+        const mensajeElemento = document.getElementById("mensaje");
+        mensajeElemento.innerHTML = "Palabras encontradas: " + palabrasEncontradas.join(", ");
+        if (palabrasEncontradas.length === palabrasMalEscritas.length) {
+          clearInterval(intervalo);
+          mensajeElemento.innerHTML += "<br>¡Nivel superado!<br>";
+    
+          document.getElementById("reintentar").style.display = "inline-block";
+        }
+      }
+
+      const intervalo = setInterval(() => {
+        tiempoRestante--;
+        contadorElemento.innerText = tiempoRestante;
+        palabrasEncontradas = palabrasMalEscritas.filter((palabra) => document.getElementById("inputPalabras").value.toLowerCase().split(" ").includes(palabra));
+        if (palabrasEncontradas.length === palabrasMalEscritas.length) {
+          clearInterval(intervalo);
+          const mensajeElemento = document.getElementById("mensaje");
+          mensajeElemento.innerHTML = "Palabras encontradas: " + palabrasEncontradas.join(", ") + "<br><br>¡Nivel superado!<br>";
+          document.getElementById("reintentar").style.display = "inline-block";
+        } else if (tiempoRestante === 0) {
+          clearInterval(intervalo);
+          const mensajeElemento = document.getElementById("mensaje");
+          mensajeElemento.innerHTML = "Perdiste tiempo agotado.<br> Palabras encontradas: " + palabrasEncontradas.join(", ");
+          document.getElementById("reintentar").style.display = "inline-block";
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>
